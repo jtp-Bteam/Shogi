@@ -58,7 +58,7 @@ public class Koma extends AppCompatImageView {
                 else setImage(R.drawable.syougi11_narikei);
                 break;
 
-            case "kyou":
+            case "kyo":
                 if(!nari) setImage(R.drawable.syougi12_kyousya);
                 else setImage(R.drawable.syougi13_narikyou);
                 break;

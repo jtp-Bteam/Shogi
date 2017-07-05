@@ -35,6 +35,7 @@ public class XmlReader {
         this.activity = activity;
         gridControl = new GridControl(activity);
         getKomaList();
+
     }
 
     public ArrayList<Koma> getKomaList(){
@@ -99,9 +100,7 @@ public class XmlReader {
                         break;
 
                     case XmlPullParser.END_TAG:
-                        gridControl.insertToGrid(x,y,komaName,isMochigoma,isSente);
-//                        koma.setValue(komaName, isSente, isMochigoma, isNari, x, y);
-//                        komaList.add(koma);
+                        if(!isMochigoma)gridControl.insertToGrid(x,y,komaName,isNari,isSente);
                         //初期化
                         komaName = "";
                         isSente = false;

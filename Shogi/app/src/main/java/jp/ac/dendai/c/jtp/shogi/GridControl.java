@@ -36,8 +36,10 @@ public class GridControl{
         Koma imageView = new Koma(activity,name,nari,sente);
         params.width = 50;
         params.height = 50;
-        params.columnSpec = GridLayout.spec(x,1);
-        params.rowSpec = GridLayout.spec(y,1);
+        int grid_x = 8-x;
+        int grid_y = y;
+        params.columnSpec = GridLayout.spec(grid_x, 1);
+        params.rowSpec = GridLayout.spec(grid_y, 1);
         imageView.setLayoutParams(params);
         layout.addView(imageView);
     }
