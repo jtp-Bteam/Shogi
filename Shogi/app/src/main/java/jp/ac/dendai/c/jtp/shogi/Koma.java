@@ -27,45 +27,39 @@ public class Koma extends AppCompatImageView {
         switch(name)
         {
             case "ou":
-                setImage(R.drawable.syougi01_ousyou);
+                setImage(R.drawable.ousyou);
                 break;
 
             case "gyoku":
-                setImage(R.drawable.syougi02_gyokusyou);
+                setImage(R.drawable.gyokusyou);
                 break;
 
             case "hi":
-                if(!nari)setImage(R.drawable.syougi03_hisya);
-                else setImage(R.drawable.syougi04_ryuuou);
+                setImage((!nari) ? R.drawable.hisya : R.drawable.ryuuou);
                 break;
 
             case "kaku":
-                if(!nari)setImage(R.drawable.syougi05_gakugyou);
-                else setImage(R.drawable.syougi06_ryuuma);
+                setImage((!nari) ? R.drawable.gakugyou : R.drawable.ryuuma);
                 break;
 
             case "kin":
-                setImage(R.drawable.syougi07_kinsyou);
+                setImage(R.drawable.kinsyou);
                 break;
 
             case "gin":
-                if(!nari) setImage(R.drawable.syougi08_ginsyou);
-                else setImage(R.drawable.syougi09_narigin);
+                setImage((!nari)?R.drawable.ginsyou : R.drawable.narigin);
                 break;
 
             case "kei":
-                if(!nari) setImage(R.drawable.syougi10_keima);
-                else setImage(R.drawable.syougi11_narikei);
+                setImage((!nari)?R.drawable.keima:R.drawable.narikei);
                 break;
 
             case "kyo":
-                if(!nari) setImage(R.drawable.syougi12_kyousya);
-                else setImage(R.drawable.syougi13_narikyou);
+                setImage((!nari)?R.drawable.kyousya:R.drawable.narikyou);
                 break;
 
             case "fu":
-                if(!nari) setImage(R.drawable.syougi14_fuhyou);
-                else setImage(R.drawable.syougi15_tokin);
+                setImage((!nari)?R.drawable.fuhyou:R.drawable.tokin);
                 break;
         }
     }

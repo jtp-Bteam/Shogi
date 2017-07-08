@@ -30,102 +30,68 @@ public class XmlReader {
     Activity activity;
     GridControl gridControl;
 
-    XmlReader(Activity activity) {
-
+    XmlReader(Activity activity, String fileName) {
         this.activity = activity;
         gridControl = new GridControl(activity);
-        getKomaList();
-
+        parseXML(fileName);
     }
 
-    public ArrayList<Koma> getKomaList(){
+    public void parseXML(String fileName){
         AssetManager am = activity.getAssets();
         XmlPullParser xpp = Xml.newPullParser();
-        ArrayList<Koma> komaList = new ArrayList<>();
-        String komaName = "";
-        boolean isSente = false, isNari = false, isMochigoma = false;
-        int x = 0, y = 0;
         try {
-            InputStream is = am.open("shogi1.xml");
+            InputStream is = am.open(fileName + ".xml");
             xpp.setInput(is, "UTF-8");
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
-                final String name = xpp.getName();
                 switch (eventType) {
-                    case XmlPullParser.START_DOCUMENT:
-
-                        System.out.println(xpp.getName());
-                        break;
-
                     case XmlPullParser.START_TAG:
+                        String komaName = "";
+                        boolean isSente = false;
+                        boolean isMochigoma = false;
+                        boolean isNari = false;
+                        int x=0,y=0;
                         for (int i = 0; i < xpp.getAttributeCount(); i++) {
+                            String value = xpp.getAttributeValue(i);
                             switch (xpp.getAttributeName(i)) {
                                 case "tejun":
-                                    if (xpp.getAttributeValue(i).equals("sente")) {
-                                        isSente = true;
-                                    } else {
-                                        isSente = false;
-                                    }
+                                    isSente = value.equals("sente");
                                     break;
 
                                 case "mochigoma":
-                                    if (xpp.getAttributeValue(i).equals("true")) {
-                                        isMochigoma = true;
-                                    } else {
-                                        isMochigoma = false;
-                                    }
+                                    //ここ別に isMochigoma = trueでも問題ない
+                                    isMochigoma = value.equals("true");
                                     break;
 
                                 case "nari":
-                                    if (xpp.getAttributeValue(i).equals("true")) {
-                                        isNari = true;
-                                    } else {
-                                        isNari = false;
-                                    }
+                                    //上と同じ
+                                    isNari = value.equals("true");
                                     break;
 
                                 case "name":
-                                    komaName = xpp.getAttributeValue(i);
+                                    komaName = value;
                                     break;
 
                                 case "x":
-                                    x = Integer.parseInt(xpp.getAttributeValue(i))-1;
+                                    x = Integer.parseInt(value)-1;
                                     break;
 
                                 case "y":
-                                    y = Integer.parseInt(xpp.getAttributeValue(i))-1;
+                                    y = Integer.parseInt(value)-1;
                                     break;
                             }
                         }
-                        break;
-
-                    case XmlPullParser.END_TAG:
                         if(!isMochigoma)gridControl.insertToGrid(x,y,komaName,isNari,isSente);
-                        //初期化
-                        komaName = "";
-                        isSente = false;
-                        isMochigoma = false;
-                        isNari = false;
-                        x = 0;
-                        y = 0;
-                        break;
-
-                    default:
+                        else
+                        {
+                            gridControl.insertToMochigoma(komaName,isSente);
+                        }
                         break;
                 }
                 eventType = xpp.next();
             }
-            Log.d("tag", "End Document");
-
-        } catch (XmlPullParserException e) {
-            Log.e("tag", e.toString());
-        } catch (IOException e) {
-            Log.e("tag", e.toString());
-        } catch (Exception e) {
-            Log.e("tag", e.toString());
-        } finally {
-
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
         }
-        return komaList;
     }
 }
