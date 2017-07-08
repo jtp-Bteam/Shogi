@@ -50,7 +50,7 @@ public class GridControl{
     {
         LinearLayout linearLayout;
         Koma koma = new Koma(activity,name,false,sente);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(50,50);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         koma.setLayoutParams(params);
         if(sente) linearLayout= (LinearLayout)activity.findViewById(R.id.linearLayout2);
         else linearLayout = (LinearLayout)activity.findViewById(R.id.linearLayout);
