@@ -6,66 +6,66 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.support.v7.widget.AppCompatImageView;
 
-/**
- * Created by PCUser on 2017/07/05.
- */
-
 public class Koma extends AppCompatImageView {
 
-    boolean sente = false;
+    private String name;
+    private boolean isNari = false;
+    private boolean isSente = false;
 
-    public Koma(Context context, String name, boolean nari, boolean sente)
+    public Koma(Context context)
+    {
+        super(context);
+    }
+
+    public Koma(Context context,String name, boolean nari, boolean sente)
     {
         super(context);
 
-        this.sente = sente;
-        selectImage(name,nari);
+        isSente = sente;
+        isNari = nari;
+        this.name = name;
+
+        selectImage();
     }
 
-    private void selectImage(String name,boolean nari)
+    private void selectImage()
     {
         switch(name)
         {
             case "ou":
-                setImage(R.drawable.syougi01_ousyou);
+                setImage(R.drawable.ousyou);
                 break;
 
             case "gyoku":
-                setImage(R.drawable.syougi02_gyokusyou);
+                setImage(R.drawable.gyokusyou);
                 break;
 
             case "hi":
-                if(!nari)setImage(R.drawable.syougi03_hisya);
-                else setImage(R.drawable.syougi04_ryuuou);
+                setImage((!isNari) ? R.drawable.hisya : R.drawable.ryuuou);
                 break;
 
             case "kaku":
-                if(!nari)setImage(R.drawable.syougi05_gakugyou);
-                else setImage(R.drawable.syougi06_ryuuma);
+                setImage((!isNari) ? R.drawable.gakugyou : R.drawable.ryuuma);
                 break;
 
             case "kin":
-                setImage(R.drawable.syougi07_kinsyou);
+                setImage(R.drawable.kinsyou);
                 break;
 
             case "gin":
-                if(!nari) setImage(R.drawable.syougi08_ginsyou);
-                else setImage(R.drawable.syougi09_narigin);
+                setImage((!isNari)?R.drawable.ginsyou : R.drawable.narigin);
                 break;
 
             case "kei":
-                if(!nari) setImage(R.drawable.syougi10_keima);
-                else setImage(R.drawable.syougi11_narikei);
+                setImage((!isNari)?R.drawable.keima:R.drawable.narikei);
                 break;
 
             case "kyo":
-                if(!nari) setImage(R.drawable.syougi12_kyousya);
-                else setImage(R.drawable.syougi13_narikyou);
+                setImage((!isNari)?R.drawable.kyousya:R.drawable.narikyou);
                 break;
 
             case "fu":
-                if(!nari) setImage(R.drawable.syougi14_fuhyou);
-                else setImage(R.drawable.syougi15_tokin);
+                setImage((!isNari)?R.drawable.fuhyou:R.drawable.tokin);
                 break;
         }
     }
@@ -73,7 +73,7 @@ public class Koma extends AppCompatImageView {
     private void setImage(int resID)
     {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),resID);
-        if(!sente) bitmap = flip(bitmap);
+        if(!isSente) bitmap = flip(bitmap);
         setImageBitmap(bitmap);
     }
 
@@ -85,5 +85,10 @@ public class Koma extends AppCompatImageView {
         Matrix matrix = new Matrix();
         matrix.setRotate(180, bitmap.getWidth()/2, bitmap.getHeight()/2);
         return Bitmap.createBitmap(bitmap, 0, 0, imageWidth, imageHeight, matrix, true);
+    }
+
+    public boolean isSente()
+    {
+        return isSente;
     }
 }
