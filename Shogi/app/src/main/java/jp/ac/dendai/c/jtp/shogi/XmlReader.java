@@ -1,9 +1,5 @@
 package jp.ac.dendai.c.jtp.shogi;
 
-/**
- * Created by PCUser on 2017/07/05.
- */
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -21,34 +17,31 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
-/**
- * Created by chiba on 2017/06/27.
- */
-
 public class XmlReader {
-    Activity activity;
-    GridControl gridControl;
+
+    private Activity activity;
+    private KomaManager km;
 
     XmlReader(Activity activity, String fileName) {
         this.activity = activity;
-        gridControl = new GridControl(activity);
+        km = new KomaManager(activity);
         parseXML(fileName);
     }
 
-    public void parseXML(String fileName){
+    private void parseXML(String fileName){
         AssetManager am = activity.getAssets();
         XmlPullParser xpp = Xml.newPullParser();
         try {
             InputStream is = am.open(fileName + ".xml");
             xpp.setInput(is, "UTF-8");
             int eventType = xpp.getEventType();
+
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
                         String komaName = "";
                         boolean isSente = false;
-                        boolean isMochigoma = false;
+                        String isMochigoma = "not";
                         boolean isNari = false;
                         int x=0,y=0;
                         for (int i = 0; i < xpp.getAttributeCount(); i++) {
@@ -59,12 +52,10 @@ public class XmlReader {
                                     break;
 
                                 case "mochigoma":
-                                    //ここ別に isMochigoma = trueでも問題ない
-                                    isMochigoma = value.equals("true");
+                                    isMochigoma = value;
                                     break;
 
                                 case "nari":
-                                    //上と同じ
                                     isNari = value.equals("true");
                                     break;
 
@@ -81,15 +72,12 @@ public class XmlReader {
                                     break;
                             }
                         }
-                        if(!isMochigoma)gridControl.insertToGrid(x,y,komaName,isNari,isSente);
-                        else
-                        {
-                            gridControl.insertToMochigoma(komaName,isSente);
-                        }
-                        break;
+                        if(isMochigoma.equals("restall")) km.setResAll(isSente);
+                        else km.addKoma(x,y,komaName,isNari,isSente,isMochigoma.equals("true"));
                 }
                 eventType = xpp.next();
             }
+            km.restAll();
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }
